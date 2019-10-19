@@ -16,6 +16,24 @@ function transactionValid (transactionId: string, position: number) {
     return true;
 }
 
+function currencyValid(currencyCode: string) {
+    const currencyCodeLength = 3;
+
+    if (currencyCode.length > currencyCodeLength) {
+        return false;
+    }
+
+    if (currencyCode != currencyCode.toUpperCase()) {
+        return false;
+    }
+
+    if (isNumber(currencyCode)) {
+        return false;
+    }
+
+    return true;
+}
+
 function validateXmlRow(row: any) {
     const stringPosition = 3;
 
@@ -29,6 +47,9 @@ function validateXmlRow(row: any) {
         return row;
     }
 
+    if (!currencyValid(currency)) {
+        return row;
+    }
 
     return;
 }
