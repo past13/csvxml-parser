@@ -5,6 +5,15 @@ function transactionValid (transactionId: string, position: number) {
         return false;
     }
   
+    const conditions = ["Invoice", "Inv"];
+    if (!conditions.some(el => transactionId.substring(0, position).includes(el))) {
+        return false;
+    }
+
+    if (!isNumber(transactionId.substring(position, 50))) {
+        return false;
+    }
+    return true;
 }
 
 function validateXmlRow(row: any) {
@@ -19,6 +28,7 @@ function validateXmlRow(row: any) {
     if (!transactionValid(id, stringPosition)) {
         return row;
     }
+
 
     return;
 }
