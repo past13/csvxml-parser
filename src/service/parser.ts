@@ -34,6 +34,14 @@ function currencyValid(currencyCode: string) {
     return true;
 }
 
+function amountValid(amount: number) {
+    if (!isDecimal(amount)) {
+        return false;
+    }
+
+    return true;
+}
+
 function validateXmlRow(row: any) {
     const stringPosition = 3;
 
@@ -48,6 +56,10 @@ function validateXmlRow(row: any) {
     }
 
     if (!currencyValid(currency)) {
+        return row;
+    }
+
+    if (!amountValid(amount)) {
         return row;
     }
 
