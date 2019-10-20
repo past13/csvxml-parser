@@ -53,32 +53,35 @@ function dateValid(transactionDate: any) {
 function validateXmlRow(row: any) {
     const stringPosition = 3;
 
-    const id = row['$'].id;
-    const date = row['TransactionDate'];
-    const amount = row['PaymentDetails'][0]['Amount'];
-    const currency = row['PaymentDetails'][0]['CurrencyCode'][0];
-    const status = row['Status'];
+    const id = row.TransactionId;
+    const date = row.TransactionDate;
+    const status = row.Status;
+
+    // const amount = row['PaymentDetails'][0]['Amount'];
+    // const currency = row['PaymentDetails'][0]['CurrencyCode'][0];
 
     if (!transactionValid(id, stringPosition)) {
         return row;
     }
 
-    if (!currencyValid(currency)) {
-        return row;
-    }
+    // if (!currencyValid(currency)) {
+    //     return row;
+    // }
 
-    if (!amountValid(amount)) {
-        return row;
-    }
+    // if (!amountValid(amount)) {
+    //     return row;
+    // }
 
     if (!dateValid(date)) {
         return row;
     }
 
+    //check status [done reject applied]
+
     return;
 }
 
-export function validateXmlData(rows: any) {
+export async function validateXmlData(rows: any) {
     const dataRows = rows;
     let rowErrors = <any>[];
 

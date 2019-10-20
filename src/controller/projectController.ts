@@ -13,17 +13,21 @@ export default class ProjectController {
     public async uploadXmlFile (req: Request, res: Response) {
        try {
             let xml = __dirname + '/data.xml';
-            fs.readFile(xml, "utf-8", function (error: any, text:any) {
+            fs.readFile(xml, "utf-8", async (error: any, text:any) => {
                 if (error) {
 
                 } else {
-                    parser.parseString(text, function (err:any, result:any) {
+                    parser.parseString(text, async (err:any, result:any) => {
                         const saveTransaction = new SaveTransaction();
                         var transaction = result['Transactions']['Transaction'];
 
-                        const validationError = validateXmlData(transaction);
+                        let transactionsList = await saveTransaction.assignToObject(transaction);
+
+                        const validationError = await validateXmlData(transactionsList);
+                        if (validationError) {
+                        }
                         
-                        let test = saveTransaction.saveTransaction(transaction);
+                        await saveTransaction.saveTransaction(transactionsList);
 
                     });
                 }
