@@ -3,11 +3,13 @@ import { TransactionModel } from '../models/transactionModel';
 export default class TransactionService {
 
     public async getXmlTransactions() {
-
-    }
-
-    public async getXmlTransactionByCurrencyId(currency: string) {
-        
+        return await Projects.find({}, (err, project) => {
+             if (!err ) {
+                 console.log('get transactions');
+            } else {
+                return err;
+            }
+        });
     }
 
     public async assignToObject(data:any) {
@@ -23,6 +25,8 @@ export default class TransactionService {
             transaction = new TransactionModel(
                                 transactionId,
                                 transactionDate,
+                                amount,
+                                currency,
                                 status
                             );
 
@@ -33,18 +37,21 @@ export default class TransactionService {
     }
 
     public async saveTransaction (data: any) {
-        
         // const project = await Projects.findOne({ name: name });
         try {
             data.forEach(async (item: any) => {
                 const transactionId = item.TransactionId;
                 const transactionDate = item.TransactionDate[0];
                 const status = item.Status[0];
+                const amount = item.Amount;
+                const currency = item.Currency[0];
 
                 const project = new Projects({
                                     transactionId,
                                     transactionDate,
-                                    status
+                                    amount,
+                                    currency,
+                                    status,
                                 });
 
                 await project.save();

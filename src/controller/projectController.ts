@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateXmlData } from './../service/parser';
-
 import TransactionService from '../service/transactionService';
 
 const xml2js = require('xml2js');
@@ -9,7 +8,7 @@ const parser = new xml2js.Parser();
 
 export default class ProjectController {
 
-public async getXmlTransactions (req: Request, res: Response) {
+    public async getXmlTransactions (req: Request, res: Response) {
         const transactionService: TransactionService = new TransactionService();
         try {
             let result = await transactionService.getXmlTransactions();

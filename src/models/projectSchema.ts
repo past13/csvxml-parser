@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 export const ProjectSchema = new Schema({
   transactionId: String,
   transactionDate: Date, 
-  // paymentDetails: { amount: Number, currencyCode: String },
+  currencyCode: String,
+  amount: String,
   status: String,
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now }
