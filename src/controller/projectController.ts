@@ -22,8 +22,9 @@ export default class ProjectController {
         const transactionService: TransactionService = new TransactionService();
         const currency = req.query.currency;
         try {
+            let result = await transactionService.getXmlTransactionByCurrencyCode(currency);
 
-            res.status(200).json();
+            res.status(200).json(result);
         } catch (err) {
             res.status(401).json(err);
         }

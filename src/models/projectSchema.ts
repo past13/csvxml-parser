@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 export const ProjectSchema = new Schema({
   transactionId: String,
   transactionDate: Date, 
-  currencyCode: String,
+  currency: String,
   amount: String,
   status: String,
   updatedAt: { type: Date, default: Date.now },
