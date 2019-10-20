@@ -20,6 +20,17 @@ export default class ProjectController {
         }
     }
 
+    public async getCsvTransactions (req: Request, res: Response) {
+        const transactionCsvService: TransactionCsvService = new TransactionCsvService();
+        try {
+            let result = await transactionCsvService.getCsvTransactions();
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(401).json(err);
+        }
+    }
+    
+
     public async getXmlTransactionsByCurrencyCode (req: Request, res: Response) {
         const transactionXmlService: TransactionXmlService = new TransactionXmlService();
         const currency = req.query.currency;
@@ -53,15 +64,12 @@ export default class ProjectController {
                 if (!validationError) {
                     console.log('not valid');
                 } else {
-                    
-                    console.log('valid');
+                    await transactionCsvService.saveCsvTransaction(fileRows);
                 }
 
                 // if (validationError) {
                 //     return res.status(403).json({ error: validationError });
                 // }
-
-                
 
                 // let transactionsList = await transactionService.assignToObject(fileRows);
 
