@@ -30,11 +30,28 @@ export default class ProjectController {
         }
     }
     
+    public async getCsvTransactionByStatus (req: Request, res: Response) {
+        const status = req.body.status
+        const transactionCsvService: TransactionCsvService = new TransactionCsvService();
+        let result;
+        try {
+            if (status) {
+                result = await transactionCsvService.getCsvTransactionByStatus(status);
+            }
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(401).json(err);
+        }
+    }
+
     public async getCsvTransactionByCurrency (req: Request, res: Response) {
         const transactionCsvService: TransactionCsvService = new TransactionCsvService();
         const currency = req.params.currency;
+        let result;
         try {
-            let result = await transactionCsvService.getCsvTransactionByCurrency(currency);
+            if (currency) {
+                result = await transactionCsvService.getCsvTransactionByCurrency(currency);
+            }
             res.status(200).json(result);
         } catch (err) {
             res.status(401).json(err);

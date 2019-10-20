@@ -2,8 +2,17 @@ import { CsvTransactions } from '../models/csvTransactions';
 
 export default class TransactionCsvService {
 
+    public async getCsvTransactionByStatus(data:any) {
+        return await CsvTransactions.findOne({ status: data}, (err, result) => {
+            if (!err ) {
+                return result;
+            } else {
+                return err;
+            }
+        });
+    }
+
     public async getCsvTransactionByCurrency(data:any) {
-        
         return await CsvTransactions.findOne({ currency: data}, (err, result) => {
              if (!err ) {
                 return result;
