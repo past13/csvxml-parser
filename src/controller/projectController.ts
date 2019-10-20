@@ -58,6 +58,34 @@ export default class ProjectController {
         }
     }
 
+    public async getXmlTransactionByStatus (req: Request, res: Response) {
+        const status = req.body.status
+        const transactionXmlService: TransactionXmlService = new TransactionXmlService();
+        let result;
+        try {
+            if (status) {
+                result = await transactionXmlService.getCsvTransactionByStatus(status);
+            }
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(401).json(err);
+        }
+    }
+
+    public async getXmlTransactionByCurrency (req: Request, res: Response) {
+        const transactionXmlService: TransactionXmlService = new TransactionXmlService();
+        const currency = req.params.currency;
+        let result;
+        try {
+            if (currency) {
+                result = await transactionXmlService.getXmlTransactionByCurrency(currency);
+            }
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(401).json(err);
+        }
+    }
+
     public async uploadCsvFile (req: Request, res: Response) {
         const fileRows = <any>[];
         const transactionCsvService: TransactionCsvService = new TransactionCsvService();

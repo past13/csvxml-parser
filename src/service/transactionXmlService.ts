@@ -12,6 +12,16 @@ export default class TransactionCsvService {
         });
     }
 
+    public async getCsvTransactionByStatus(data: any) {
+        return await XmlTransactions.findOne({ status: data}, (err, result) => {
+            if (!err ) {
+                return result;
+            } else {
+                return err;
+            }
+        });
+    }
+
     public async getXmlTransactionByCurrency(currency: string) {
         return await XmlTransactions.findOne({currency : currency}, (err, project) => {
             if (!err ) {
