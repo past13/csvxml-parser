@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export const ProjectSchema = new Schema({
+export const XmlSchema = new Schema({
   transactionId: String,
   transactionDate: Date, 
   currency: String,
@@ -11,4 +11,4 @@ export const ProjectSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-export const Projects = mongoose.model('Project', ProjectSchema);
+export const XmlTransactions = mongoose.model('Project', XmlSchema);

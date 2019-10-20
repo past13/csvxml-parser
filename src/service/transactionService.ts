@@ -1,9 +1,9 @@
-import { Projects } from '../models/projectSchema';
+import { XmlTransactions } from '../models/projectSchema';
 import { TransactionModel } from '../models/transactionModel';
 export default class TransactionService {
 
     public async getXmlTransactions() {
-        return await Projects.find({}, (err, project) => {
+        return await XmlTransactions.find({}, (err, project) => {
              if (!err ) {
                  console.log('get transactions');
             } else {
@@ -13,7 +13,7 @@ export default class TransactionService {
     }
 
     public async getXmlTransactionByCurrencyCode(currency: string) {
-        return await Projects.findOne({}, (err, project) => {
+        return await XmlTransactions.findOne({}, (err, project) => {
             if (!err ) {
                 console.log('get transactions');
             } else {
@@ -48,27 +48,28 @@ export default class TransactionService {
     }
 
     public async saveTransaction (data: any) {
-        // const project = await Projects.findOne({ name: name });
         try {
             data.forEach(async (item: any) => {
-                const transactionId = item.TransactionId;
-                const transactionDate = item.TransactionDate[0];
-                const status = item.Status[0];
-                const amount = item.Amount;
-                const currency = item.Currency;
-
-
-
-                const project = new Projects({
-                                    transactionId,
-                                    transactionDate,
-                                    currency,
-                                    amount,
-                                    status,
-                                });
-                console.log(project);
-                await project.save();
-                console.log('saved')
+                await XmlTransactions.findOne({ transactionId: item.TransactionId },async (err, result) => {
+                    if (!result) {
+                        const transactionId = item.TransactionId;
+                        const transactionDate = item.TransactionDate[0];
+                        const status = item.Status[0];
+                        const amount = item.Amount;
+                        const currency = item.Currency;
+        
+                        const xml = new XmlTransactions({
+                                            transactionId,
+                                            transactionDate,
+                                            currency,
+                                            amount,
+                                            status,
+                                        });
+                        await xml.save();
+                    } else {
+                         console.log('exist'); 
+                    }
+                });
             });
         } catch(err) {
                 console.log('error')

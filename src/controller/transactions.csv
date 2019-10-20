@@ -1,0 +1,7 @@
+TransactionId,Amount,CurrencyCode,TransactionDate,Status 
+ Invoice0000001,1000.33,LTU,20/02/2019 12:33:16,Approved
+ Invoice0000002,1001.02,EE,20/02/2019 12:33:17,Approved
+ Invoice0000003,1002.01,LV,20/02/2019 12:33:18,Approved
+ Invoice0000004,1003.04,USD,20/02/2019 12:33:19,Approved
+ Invoice0000005,1004.05,USD,20/02/2019 12:33:20,Approved
+ Invoice0000006,1005.06,USD,20/02/2019 12:33:21,Approved
