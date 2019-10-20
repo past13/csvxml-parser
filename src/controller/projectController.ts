@@ -128,9 +128,9 @@ export default class ProjectController {
                     parser.parseString(text, async (err:any, result:any) => {
                         var transaction = result['Transactions']['Transaction'];
                         let transactionsList = await transactionXmlService.assignToObject(transaction);
-                        const validationError = await validateXmlData(transactionsList);
-                        if (validationError) {
-
+                        const notValidatLine = await validateXmlData(transactionsList);
+                        if (notValidatLine) {
+                            await transactionXmlService.saveCorruptedCsvTransaction(notValidatLine);
                         }
                         await transactionXmlService.saveXmlTransaction(transactionsList);
                     });

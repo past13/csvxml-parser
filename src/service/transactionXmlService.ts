@@ -1,4 +1,6 @@
 import { XmlTransactions } from '../models/xmlTransactions';
+import { XmlWrongTransactions } from '../models/xmlWrongTransactions';
+
 import { TransactionModel } from '../models/transactionModel';
 export default class TransactionCsvService {
 
@@ -57,6 +59,37 @@ export default class TransactionCsvService {
         return transactions;
     }
 
+    public async saveCorruptedXmlTransaction (data: any) {
+        try {
+            data.forEach(async (item: any) => {
+                await XmlTransactions.findOne({ transactionId: item.TransactionId },async (err, result) => {
+                    if (!result) {
+                        const transactionId = item.TransactionId;
+                        const transactionDate = item.TransactionDate[0];
+                        const status = item.Status[0];
+                        const amount = item.Amount;
+                        const currency = item.Currency;
+        
+                        const xml = new XmlWrongTransactions({
+                                            transactionId,
+                                            transactionDate,
+                                            currency,
+                                            amount,
+                                            status,
+                                        });
+                        await xml.save();
+                    } else {
+                         console.log('exist'); 
+                    }
+                });
+            });
+        } catch(err) {
+                console.log('error')
+        }
+        
+        return;
+    }
+    
     public async saveXmlTransaction (data: any) {
         try {
             data.forEach(async (item: any) => {
