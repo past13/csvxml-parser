@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateXmlData } from './../service/parser';
 
+import SaveTransaction from './../service/saveTransaction';
+
 const fs = require('fs');
 const xml2js = require('xml2js');
 const parser = new xml2js.Parser();
+
 
 export default class ProjectController {
 
@@ -15,13 +18,13 @@ export default class ProjectController {
 
                 } else {
                     parser.parseString(text, function (err:any, result:any) {
+                        const saveTransaction = new SaveTransaction();
                         var transaction = result['Transactions']['Transaction'];
 
                         const validationError = validateXmlData(transaction);
-                        if (validationError) {
-                        } else {
+                        
+                        let test = saveTransaction.saveTransaction(transaction);
 
-                        }
                     });
                 }
             });

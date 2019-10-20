@@ -14,6 +14,6 @@
             <Amount>100.00</Amount>
             <CurrencyCode>LTU</CurrencyCode>
         </PaymentDetails>
-        <Status>Done</Status>
+        <Status>Reject</Status>
     </Transaction>
 </Transactions>
