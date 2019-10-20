@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
+import { validateXmlData } from './../service/parser';
 
 const fs = require('fs');
 const xml2js = require('xml2js');
 const parser = new xml2js.Parser();
 
 export default class ProjectController {
+
     public async uploadXmlFile (req: Request, res: Response) {
-        try {
+       try {
             let xml = __dirname + '/data.xml';
             fs.readFile(xml, "utf-8", function (error: any, text:any) {
                 if (error) {
@@ -14,6 +16,12 @@ export default class ProjectController {
                 } else {
                     parser.parseString(text, function (err:any, result:any) {
                         var transaction = result['Transactions']['Transaction'];
+
+                        const validationError = validateXmlData(transaction);
+                        if (validationError) {
+                        } else {
+
+                        }
                     });
                 }
             });

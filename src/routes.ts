@@ -6,6 +6,6 @@ export class Routes {
 
     public routes(app: Application): void {
 
-        // app.get('/uploadXmlFile', this.projectController.uploadXmlFile);
+        app.get('/uploadXmlFile', this.projectController.uploadXmlFile);
     }
 }
