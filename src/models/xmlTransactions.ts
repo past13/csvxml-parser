@@ -11,4 +11,4 @@ export const XmlSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-export const XmlTransactions = mongoose.model('Project', XmlSchema);
+export const XmlTransactions = mongoose.model('XmlTransactions', XmlSchema);

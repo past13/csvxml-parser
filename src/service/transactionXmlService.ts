@@ -1,6 +1,6 @@
-import { XmlTransactions } from '../models/projectSchema';
+import { XmlTransactions } from '../models/xmlTransactions';
 import { TransactionModel } from '../models/transactionModel';
-export default class TransactionService {
+export default class TransactionCsvService {
 
     public async getXmlTransactions() {
         return await XmlTransactions.find({}, (err, project) => {
@@ -47,7 +47,7 @@ export default class TransactionService {
         return transactions;
     }
 
-    public async saveTransaction (data: any) {
+    public async saveXmlTransaction (data: any) {
         try {
             data.forEach(async (item: any) => {
                 await XmlTransactions.findOne({ transactionId: item.TransactionId },async (err, result) => {

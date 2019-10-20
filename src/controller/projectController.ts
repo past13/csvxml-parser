@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateCsvData, validateXmlData } from './../service/parser';
-import TransactionService from '../service/transactionService';
+import TransactionCsvService from '../service/transactionCsvService';
+import TransactionXmlService from '../service/transactionXmlService';
 
 const xml2js = require('xml2js');
 const csv = require('fast-csv');
@@ -10,9 +11,9 @@ const parser = new xml2js.Parser();
 export default class ProjectController {
 
     public async getXmlTransactions (req: Request, res: Response) {
-        const transactionService: TransactionService = new TransactionService();
+        const transactionXmlService: TransactionXmlService = new TransactionXmlService();
         try {
-            let result = await transactionService.getXmlTransactions();
+            let result = await transactionXmlService.getXmlTransactions();
             res.status(200).json(result);
         } catch (err) {
             res.status(401).json(err);
@@ -20,10 +21,10 @@ export default class ProjectController {
     }
 
     public async getXmlTransactionsByCurrencyCode (req: Request, res: Response) {
-        const transactionService: TransactionService = new TransactionService();
+        const transactionXmlService: TransactionXmlService = new TransactionXmlService();
         const currency = req.query.currency;
         try {
-            let result = await transactionService.getXmlTransactionByCurrencyCode(currency);
+            let result = await transactionXmlService.getXmlTransactionByCurrencyCode(currency);
 
             res.status(200).json(result);
         } catch (err) {
@@ -33,6 +34,7 @@ export default class ProjectController {
 
     public async uploadCsvFile (req: Request, res: Response) {
         const fileRows = <any>[];
+        const transactionCsvService: TransactionCsvService = new TransactionCsvService();
         try {
             var stream = fs.createReadStream(__dirname + '/transactions.csv');
             // csv.fromPath(req.file.path)
@@ -40,20 +42,30 @@ export default class ProjectController {
             .pipe(
                 csv.parse({ headers: true })
             )
-            .on('error',function(data: any){  
+            .on('error', async function(data: any){  
                 //add errors
             })
-            .on('data',function(data: any){  
+            .on('data', async function(data: any){  
                 fileRows.push(data);
             })
-            .on('end', function(data: any){
+            .on('end', async function(data: any){
                 const validationError = validateCsvData(fileRows);
-                
-                if (validationError) {
-                    return res.status(403).json({ error: validationError });
+                if (!validationError) {
+                    console.log('not valid');
+                } else {
+                    
+                    console.log('valid');
                 }
+
+                // if (validationError) {
+                //     return res.status(403).json({ error: validationError });
+                // }
+
+                
+
+                // let transactionsList = await transactionService.assignToObject(fileRows);
+
                 //todo: save to mongo db
-                console.log(fileRows)
                 return res.json({ message: "valid csv" })
             })
         } catch(err) {
@@ -62,7 +74,7 @@ export default class ProjectController {
     }
 
     public async uploadXmlFile (req: Request, res: Response) {
-        const transactionService: TransactionService = new TransactionService();
+        const transactionXmlService: TransactionXmlService = new TransactionXmlService();
         try {
             let xml = __dirname + '/data.xml';
             fs.readFile(xml, "utf-8", async (error: any, text:any) => {
@@ -71,12 +83,12 @@ export default class ProjectController {
                 } else {
                     parser.parseString(text, async (err:any, result:any) => {
                         var transaction = result['Transactions']['Transaction'];
-                        let transactionsList = await transactionService.assignToObject(transaction);
+                        let transactionsList = await transactionXmlService.assignToObject(transaction);
                         const validationError = await validateXmlData(transactionsList);
                         if (validationError) {
 
                         }
-                        await transactionService.saveTransaction(transactionsList);
+                        await transactionXmlService.saveXmlTransaction(transactionsList);
                     });
                 }
             });
