@@ -8,7 +8,7 @@ export class Routes {
 
         app.get('/getXmlTransactions', this.projectController.getXmlTransactions); 
 
-        app.get('/getXmlTransactionsByCurrencyCode', this.projectController.getXmlTransactionsByCurrencyCode); 
+        app.get('/uploadCsvFile', this.projectController.uploadCsvFile); 
         app.get('/uploadXmlFile', this.projectController.uploadXmlFile);
     }
 }
