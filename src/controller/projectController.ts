@@ -8,6 +8,7 @@ const csv = require('fast-csv');
 import fs from 'fs';
 const parser = new xml2js.Parser();
 
+
 export default class ProjectController {
 
     public async getXmlTransactions (req: Request, res: Response) {
@@ -123,19 +124,20 @@ export default class ProjectController {
             let xml = __dirname + '/data.xml';
             fs.readFile(xml, "utf-8", async (error: any, text:any) => {
                 if (error) {
-
+                    res.status(404).json(error);
                 } else {
                     parser.parseString(text, async (err:any, result:any) => {
                         var transaction = result['Transactions']['Transaction'];
                         let transactionsList = await transactionXmlService.assignToObject(transaction);
                         const notValidatLine = await validateXmlData(transactionsList);
                         if (notValidatLine) {
-                            await transactionXmlService.saveCorruptedCsvTransaction(notValidatLine);
+                            await transactionXmlService.saveCorruptedXmlTransaction(notValidatLine);
                         }
                         await transactionXmlService.saveXmlTransaction(transactionsList);
                     });
                 }
             });
+           
             return res.json({ message: "valid xml" })
         } catch (err) {
             res.status(401).json(err);
