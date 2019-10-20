@@ -81,12 +81,50 @@ function validateXmlRow(row: any) {
     return;
 }
 
+function validateCsvRow(row: any) {
+    const stringPosition = 8;
+
+    //Transaction
+    if (!transactionValid(row.TransactionId, stringPosition)) {
+        return row;
+    }
+    // //Currency
+    if (!currencyValid(row.CurrencyCode)) {
+        return row;
+    }
+    //Amount
+    if (!amountValid(row.Amount)) {
+        return row;
+    }
+    //Date
+    if (!dateValid(row.TransactionDate)) {
+        return row;
+    }
+    
+    return;
+}
+
 export async function validateXmlData(rows: any) {
     const dataRows = rows;
     let rowErrors = <any>[];
 
     for (let i = 0; i < dataRows.length; i++) {
         const rowError = validateXmlRow(dataRows[i]);
+        if (rowError) {
+            rowErrors.push(rowError);
+        }
+    }
+
+    return rowErrors;
+}
+
+export function validateCsvData(rows: any) {
+    const dataRows = rows.slice(0, rows.length);
+
+    let rowErrors =[];
+
+    for (let i = 0; i < dataRows.length; i++) {
+        const rowError = validateCsvRow(dataRows[i]);
         if (rowError) {
             rowErrors.push(rowError);
         }

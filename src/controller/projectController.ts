@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateXmlData } from './../service/parser';
+import { validateCsvData, validateXmlData } from './../service/parser';
 import TransactionService from '../service/transactionService';
 
 const xml2js = require('xml2js');
@@ -47,7 +47,11 @@ export default class ProjectController {
                 fileRows.push(data);
             })
             .on('end', function(data: any){
+                const validationError = validateCsvData(fileRows);
                 
+                if (validationError) {
+                    return res.status(403).json({ error: validationError });
+                }
                 //todo: save to mongo db
                 console.log(fileRows)
                 return res.json({ message: "valid csv" })
