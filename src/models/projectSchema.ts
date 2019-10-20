@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const ProjectSchema = new Schema({
-  transactionId: Number,
+  transactionId: String,
   transactionDate: Date, 
   // paymentDetails: { amount: Number, currencyCode: String },
   status: String,

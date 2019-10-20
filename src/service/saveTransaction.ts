@@ -25,8 +25,25 @@ export default class SaveTransaction {
     }
 
     public async saveTransaction (data: any) {
-        // const project = await Projects.findOne({ name: name });
         
+        // const project = await Projects.findOne({ name: name });
+        try {
+            data.forEach(async (item: any) => {
+                const transactionId = item.TransactionId;
+                const transactionDate = item.TransactionDate[0];
+                const status = item.Status[0];
+
+                const project = new Projects({
+                                    transactionId,
+                                    transactionDate,
+                                    status
+                                });
+
+                await project.save();
+            });
+        } catch(err) {
+            
+        }
         
         return;
     }
