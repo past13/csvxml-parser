@@ -42,6 +42,14 @@ function amountValid(amount: number) {
     return true;
 }
 
+function dateValid(transactionDate: any) {
+    if(!isDateValid(transactionDate)) {
+        false;
+    }
+
+    return true;
+}
+
 function validateXmlRow(row: any) {
     const stringPosition = 3;
 
@@ -60,6 +68,10 @@ function validateXmlRow(row: any) {
     }
 
     if (!amountValid(amount)) {
+        return row;
+    }
+
+    if (!dateValid(date)) {
         return row;
     }
 
