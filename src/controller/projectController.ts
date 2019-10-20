@@ -103,9 +103,9 @@ export default class ProjectController {
                 fileRows.push(data);
             })
             .on('end', async function(data: any){
-                const validationError = validateCsvData(fileRows);
-                if (!validationError) {
-                    console.log('not valid');
+                const notValidatLine = validateCsvData(fileRows);
+                if (!notValidatLine) {
+                    await transactionCsvService.saveCorruptedCsvTransaction(fileRows);
                 } else {
                     await transactionCsvService.saveCsvTransaction(fileRows);
                 }

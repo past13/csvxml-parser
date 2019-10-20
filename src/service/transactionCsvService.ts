@@ -1,4 +1,5 @@
 import { CsvTransactions } from '../models/csvTransactions';
+import { CsvWrongTransactions } from '../models/csvWrongTransactions';
 
 export default class TransactionCsvService {
 
@@ -30,6 +31,38 @@ export default class TransactionCsvService {
                 return err;
             }
         });
+    }
+
+    public async saveCorruptedCsvTransaction (data: any) {
+        try {
+            data.forEach(async (item: any) => {
+                await CsvTransactions.findOne({ transactionId: item.TransactionId }, async (err, result) => {
+                    if (!result) {
+
+                        const transactionId = item.TransactionId.trim();
+                        const transactionDate = item.TransactionDate;
+                        const status = item.Status;
+                        const amount = item.Amount;
+                        const currency = item.CurrencyCode;
+        
+                        const csv = new CsvWrongTransactions({
+                                            transactionId,
+                                            transactionDate,
+                                            currency,
+                                            amount,
+                                            status,
+                                        });
+                        await csv.save();
+                    } else {
+                         console.log('exist'); 
+                    }
+                });
+            });
+        } catch(err) {
+                console.log('error')
+        }
+        
+        return;
     }
 
     public async saveCsvTransaction (data: any) {
