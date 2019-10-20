@@ -6,6 +6,10 @@ export class Routes {
 
     public routes(app: Application): void {
 
+        app.get('/getXmlTransactionsByCurrencyCode', this.projectController.getXmlTransactions); 
+
+
+        app.get('/getXmlTransactionsByCurrencyCode', this.projectController.getXmlTransactionsByCurrencyCode); 
         app.get('/uploadXmlFile', this.projectController.uploadXmlFile);
     }
 }

@@ -1,6 +1,14 @@
-import { Projects, ProjectSchema } from '../models/projectSchema';
+import { Projects } from '../models/projectSchema';
 import { TransactionModel } from '../models/transactionModel';
-export default class SaveTransaction {
+export default class TransactionService {
+
+    public async getXmlTransactions() {
+
+    }
+
+    public async getXmlTransactionByCurrencyId(currency: string) {
+        
+    }
 
     public async assignToObject(data:any) {
         let transactions = <any>[];
@@ -40,9 +48,10 @@ export default class SaveTransaction {
                                 });
 
                 await project.save();
+                console.log('saved')
             });
         } catch(err) {
-            
+                console.log('error')
         }
         
         return;
