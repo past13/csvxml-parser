@@ -12,10 +12,10 @@ export default class TransactionCsvService {
         });
     }
 
-    public async getXmlTransactionByCurrencyCode(currency: string) {
-        return await XmlTransactions.findOne({}, (err, project) => {
+    public async getXmlTransactionByCurrency(currency: string) {
+        return await XmlTransactions.findOne({currency : currency}, (err, project) => {
             if (!err ) {
-                console.log('get transactions');
+                return project;
             } else {
                 return err;
             }

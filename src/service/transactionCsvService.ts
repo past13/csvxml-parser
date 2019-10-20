@@ -2,10 +2,21 @@ import { CsvTransactions } from '../models/csvTransactions';
 
 export default class TransactionCsvService {
 
-    public async getCsvTransactions() {
-        return await CsvTransactions.find({}, (err, project) => {
+    public async getCsvTransactionByCurrency(data:any) {
+        
+        return await CsvTransactions.findOne({ currency: data}, (err, result) => {
              if (!err ) {
-                return project;
+                return result;
+            } else {
+                return err;
+            }
+        });
+    }
+
+    public async getCsvTransactions() {
+        return await CsvTransactions.find({}, (err, result) => {
+             if (!err ) {
+                return result;
             } else {
                 return err;
             }

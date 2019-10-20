@@ -30,13 +30,11 @@ export default class ProjectController {
         }
     }
     
-
-    public async getXmlTransactionsByCurrencyCode (req: Request, res: Response) {
-        const transactionXmlService: TransactionXmlService = new TransactionXmlService();
-        const currency = req.query.currency;
+    public async getCsvTransactionByCurrency (req: Request, res: Response) {
+        const transactionCsvService: TransactionCsvService = new TransactionCsvService();
+        const currency = req.params.currency;
         try {
-            let result = await transactionXmlService.getXmlTransactionByCurrencyCode(currency);
-
+            let result = await transactionCsvService.getCsvTransactionByCurrency(currency);
             res.status(200).json(result);
         } catch (err) {
             res.status(401).json(err);
