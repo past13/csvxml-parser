@@ -67,13 +67,6 @@ export default class ProjectController {
                     await transactionCsvService.saveCsvTransaction(fileRows);
                 }
 
-                // if (validationError) {
-                //     return res.status(403).json({ error: validationError });
-                // }
-
-                // let transactionsList = await transactionService.assignToObject(fileRows);
-
-                //todo: save to mongo db
                 return res.json({ message: "valid csv" })
             })
         } catch(err) {
